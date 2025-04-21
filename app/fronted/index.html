@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción de Cáncer de Mama</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container mt-4 mb-5">
+        <div class="text-center mb-4">
+            <h1 class="display-4">Predicción de Cáncer de Mama</h1>
+            <p class="lead">Ingrese las 30 características para obtener una predicción utilizando el modelo MpNeurona</p>
+        </div>
+
+        <div class="form-container mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Configuración de la API</h5>
+                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#apiConfig">
+                        Mostrar/Ocultar
+                    </button>
+                </div>
+                <div class="collapse" id="apiConfig">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="apiUrlInput" class="form-label">URL de la API</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="apiUrlInput" value="http://localhost:8000">
+                                <button class="btn btn-outline-primary" type="button" id="saveApiUrl">Guardar</button>
+                                <button class="btn btn-outline-secondary" type="button" id="testApiBtn">Probar conexión</button>
+                            </div>
+                            <div class="form-text">Establezca la URL donde está ejecutando la API de FastAPI</div>
+                        </div>
+                        <div id="apiStatus"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="alert alert-danger mt-3 mb-3" id="validationError" style="display: none;">
+                Por favor, complete todos los campos requeridos antes de enviar el formulario.
+            </div>
+
+            <form id="predictionForm" novalidate>
+                <div class="features-section">
+                    <h3 class="feature-title">Características Medias</h3>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="mean_radius" class="form-label">Radio Medio</label>
+                            <input type="number" step="any" class="form-control" id="mean_radius" name="mean_radius" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mean_texture" class="form-label">Textura Media</label>
+                            <input type="number" step="any" class="form-control" id="mean_texture" name="mean_texture" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mean_perimeter" class="form-label">Perímetro Medio</label>
+                            <input type="number" step="any" class="form-control" id="mean_perimeter" name="mean_perimeter" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mean_area" class="form-label">Área Media</label>
+                            <input type="number" step="any" class="form-control" id="mean_area" name="mean_area" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mean_smoothness" class="form-label">Suavidad Media</label>
+                            <input type="number" step="any" class="form-control" id="mean_smoothness" name="mean_smoothness" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mean_compactness" class="form-label">Compacidad Media</label>
+                            <input type="number" step="any" class="form-control" id="mean_compactness" name="mean_compactness" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mean_concavity" class="form-label">Concavidad Media</label>
+                            <input type="number" step="any" class="form-control" id="mean_concavity" name="mean_concavity" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mean_concave_points" class="form-label">Puntos Cóncavos Medios</label>
+                            <input type="number" step="any" class="form-control" id="mean_concave_points" name="mean_concave_points" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mean_symmetry" class="form-label">Simetría Media</label>
+                            <input type="number" step="any" class="form-control" id="mean_symmetry" name="mean_symmetry" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mean_fractal_dimension" class="form-label">Dimensión Fractal Media</label>
+                            <input type="number" step="any" class="form-control" id="mean_fractal_dimension" name="mean_fractal_dimension" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features-section">
+                    <h3 class="feature-title">Características de Error</h3>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="radius_error" class="form-label">Error del Radio</label>
+                            <input type="number" step="any" class="form-control" id="radius_error" name="radius_error" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="texture_error" class="form-label">Error de la Textura</label>
+                            <input type="number" step="any" class="form-control" id="texture_error" name="texture_error" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="perimeter_error" class="form-label">Error del Perímetro</label>
+                            <input type="number" step="any" class="form-control" id="perimeter_error" name="perimeter_error" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="area_error" class="form-label">Error del Área</label>
+                            <input type="number" step="any" class="form-control" id="area_error" name="area_error" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="smoothness_error" class="form-label">Error de la Suavidad</label>
+                            <input type="number" step="any" class="form-control" id="smoothness_error" name="smoothness_error" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="compactness_error" class="form-label">Error de la Compacidad</label>
+                            <input type="number" step="any" class="form-control" id="compactness_error" name="compactness_error" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="concavity_error" class="form-label">Error de la Concavidad</label>
+                            <input type="number" step="any" class="form-control" id="concavity_error" name="concavity_error" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="concave_points_error" class="form-label">Error de Puntos Cóncavos</label>
+                            <input type="number" step="any" class="form-control" id="concave_points_error" name="concave_points_error" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="symmetry_error" class="form-label">Error de la Simetría</label>
+                            <input type="number" step="any" class="form-control" id="symmetry_error" name="symmetry_error" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="fractal_dimension_error" class="form-label">Error de la Dimensión Fractal</label>
+                            <input type="number" step="any" class="form-control" id="fractal_dimension_error" name="fractal_dimension_error" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features-section">
+                    <h3 class="feature-title">Características Peores</h3>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="worst_radius" class="form-label">Peor Radio</label>
+                            <input type="number" step="any" class="form-control" id="worst_radius" name="worst_radius" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="worst_texture" class="form-label">Peor Textura</label>
+                            <input type="number" step="any" class="form-control" id="worst_texture" name="worst_texture" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="worst_perimeter" class="form-label">Peor Perímetro</label>
+                            <input type="number" step="any" class="form-control" id="worst_perimeter" name="worst_perimeter" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="worst_area" class="form-label">Peor Área</label>
+                            <input type="number" step="any" class="form-control" id="worst_area" name="worst_area" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="worst_smoothness" class="form-label">Peor Suavidad</label>
+                            <input type="number" step="any" class="form-control" id="worst_smoothness" name="worst_smoothness" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="worst_compactness" class="form-label">Peor Compacidad</label>
+                            <input type="number" step="any" class="form-control" id="worst_compactness" name="worst_compactness" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="worst_concavity" class="form-label">Peor Concavidad</label>
+                            <input type="number" step="any" class="form-control" id="worst_concavity" name="worst_concavity" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="worst_concave_points" class="form-label">Peores Puntos Cóncavos</label>
+                            <input type="number" step="any" class="form-control" id="worst_concave_points" name="worst_concave_points" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="worst_symmetry" class="form-label">Peor Simetría</label>
+                            <input type="number" step="any" class="form-control" id="worst_symmetry" name="worst_symmetry" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="worst_fractal_dimension" class="form-label">Peor Dimensión Fractal</label>
+                            <input type="number" step="any" class="form-control" id="worst_fractal_dimension" name="worst_fractal_dimension" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary" id="predictBtn">Predecir</button>
+                    <button type="button" id="fillSampleBtn" class="btn btn-secondary">Llenar con Datos de Ejemplo</button>
+                    <button type="reset" class="btn btn-outline-danger">Limpiar Formulario</button>
+                </div>
+            </form>
+
+            <div class="text-center mt-3">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+
+            <div class="card result-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Resultado de la Predicción</h5>
+                    <button id="toggleDebugBtn" class="btn btn-sm btn-outline-secondary">Mostrar detalles técnicos</button>
+                </div>
+                <div class="card-body">
+                    <div id="predictionResult"></div>
+                    <div class="progress mt-3">
+                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    </div>
+                    <div class="text-center mt-3" id="probabilityText"></div>
+                    <div class="mt-3" id="accuracyResult"></div>
+                    <div id="debugInfo" class="debug-info mt-3"></div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Información del Modelo</h5>
+                </div>
+                <div class="card-body">
+                    <div id="modelInfo">
+                        <p class="text-center">Cargando información del modelo...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-light py-3 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">API de Predicción de Cáncer de Mama &copy; 2025</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

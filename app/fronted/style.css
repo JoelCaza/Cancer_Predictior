@@ -1,0 +1,44 @@
+/* style.css */
+.form-container {
+    max-width: 95%; /* Aumentamos el ancho máximo para acomodar más campos */
+    margin: 0 auto;
+}
+
+.result-card {
+    display: none;
+    margin-top: 20px;
+}
+
+.spinner-border {
+    display: none;
+    margin: 0 auto;
+}
+
+.features-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+}
+
+.feature-title {
+    margin-bottom: 15px;
+    color: #0d6efd;
+}
+
+#apiStatus {
+    margin-bottom: 20px;
+}
+
+.debug-info {
+    font-family: monospace;
+    white-space: pre-wrap;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+}

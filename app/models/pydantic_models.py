@@ -1,0 +1,40 @@
+# app/models/pydantic_models.py
+from pydantic import BaseModel, Field
+from typing import List
+
+class CancerFeatures(BaseModel):
+    mean_radius: float = Field(..., description="Media del radio")
+    mean_texture: float = Field(..., description="Media de la textura")
+    mean_perimeter: float = Field(..., description="Media del perímetro")
+    mean_area: float = Field(..., description="Media del área")
+    mean_smoothness: float = Field(..., description="Media de la suavidad")
+    mean_compactness: float = Field(..., description="Media de la compacidad")
+    mean_concavity: float = Field(..., description="Media de la concavidad")
+    mean_concave_points: float = Field(..., description="Media de puntos cóncavos")
+    mean_symmetry: float = Field(..., description="Media de la simetría")
+    mean_fractal_dimension: float = Field(..., description="Media de la dimensión fractal")
+    radius_error: float = Field(..., description="Error del radio")
+    texture_error: float = Field(..., description="Error de la textura")
+    perimeter_error: float = Field(..., description="Error del perímetro")
+    area_error: float = Field(..., description="Error del área")
+    smoothness_error: float = Field(..., description="Error de la suavidad")
+    compactness_error: float = Field(..., description="Error de la compacidad")
+    concavity_error: float = Field(..., description="Error de la concavidad")
+    concave_points_error: float = Field(..., description="Error de puntos cóncavos")
+    symmetry_error: float = Field(..., description="Error de la simetría")
+    fractal_dimension_error: float = Field(..., description="Error de la dimensión fractal")
+    worst_radius: float = Field(..., description="Peor radio")
+    worst_texture: float = Field(..., description="Peor textura")
+    worst_perimeter: float = Field(..., description="Peor perímetro")
+    worst_area: float = Field(..., description="Peor área")
+    worst_smoothness: float = Field(..., description="Peor suavidad")
+    worst_compactness: float = Field(..., description="Peor compacidad")
+    worst_concavity: float = Field(..., description="Peor concavidad")
+    worst_concave_points: float = Field(..., description="Peor puntos cóncavos")
+    worst_symmetry: float = Field(..., description="Peor simetría")
+    worst_fractal_dimension: float = Field(..., description="Peor dimensión fractal")
+
+class PredictionResponse(BaseModel):
+    prediction: int = Field(..., description="Predicción: 0=Maligno, 1=Benigno")
+    probability: float = Field(..., description="Probabilidad de la predicción")
+    features_used: List[str] = Field(..., description="Características utilizadas")

@@ -1,0 +1,49 @@
+# Archivos de Python generados
+__pycache__/
+*.pyc
+*.pyo
+dist/
+build/
+eggs/
+.egg-info/
+wheelhouse/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+.tox/
+.venv/
+env/
+venv/
+ENV/
+pyvenv.cfg
+*.manifest
+
+# Archivos específicos de entornos de desarrollo (IDE)
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Archivos del sistema operativo
+Thumbs.db
+
+# Archivos de datos y modelos (si son grandes o no deben rastrearse)
+model/*.joblib  # Ignora archivos .joblib dentro de la carpeta model
+data/* # Si tienes una carpeta de datos que no debe rastrearse
+*.csv          # Si tienes archivos CSV grandes que no deben rastrearse
+
+# Archivos de logs
+*.log
+
+# Archivos temporales
+tmp/
+temp/
+*.tmp
+
+# Archivos de configuración sensibles (¡ten cuidado con esto!)
+*.ini
+*.cfg
+.env
+.flaskenv

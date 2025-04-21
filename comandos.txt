@@ -1,0 +1,4 @@
+#Api
+uvicorn app.main:app --reload
+#Entrenamiento de Modelo
+python train_model.py
