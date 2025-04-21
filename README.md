@@ -20,8 +20,8 @@ El objetivo principal de este proyecto es demostrar la creación de un modelo de
 
 1.  **Clonar el repositorio (si aplica):**
     ```bash
-    git clone <URL_DEL_REPOSITORIO>
-    cd <nombre_del_repositorio>
+    git clone <https://github.com/JoelCaza/Cancer_Predictior.git>
+    cd <Cancer_Predictior>
     ```
 
 3.  **Instalar las dependencias:**
